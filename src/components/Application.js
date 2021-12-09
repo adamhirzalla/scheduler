@@ -5,48 +5,11 @@ import Appointment from "./Appointment";
 
 import "components/Application.scss";
 
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer:{
-        id: 3,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-  },
-  {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Archie Andrews",
-      interviewer:{
-        id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
-      }
-    }
-  },
-  {
-    id: 5,
-    time: "4pm",
-  }
-];
-
 export default function Application(props) {
 
-  const parsedAppointments = appointments.map(appointment =>
+  const dailyAppointments = []
+
+  const parsedAppointments = dailyAppointments.map(appointment =>
     <Appointment {...{
       key: appointment.id,
       time: appointment.time,
