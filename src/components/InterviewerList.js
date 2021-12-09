@@ -9,7 +9,7 @@ export default function InterviewerList(props) {
         key: obj.id,
         name: obj.name,
         avatar: obj.avatar, 
-        onChange: () => onChange(obj.id), 
+        setInterviewer: () => onChange(obj.id), 
         selected: obj.id === value
       }}/>
     )

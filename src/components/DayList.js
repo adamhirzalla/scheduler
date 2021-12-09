@@ -9,7 +9,7 @@ export default function DayList(props) {
     name: dayObj.name,
     spots: dayObj.spots,
     selected: dayObj.name === value,
-    onChange
+    setDay: onChange
   }}/>)
 
   return (
