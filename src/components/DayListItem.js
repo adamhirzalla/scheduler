@@ -4,8 +4,8 @@ import classNames from "classnames";
 import "components/DayListItem.scss"
 
 export default function DayListItem(props) {
-  const { name, spots, selected, setDay } = props
-  const handleClick = () => setDay(name)
+  const { name, spots, selected, onChange } = props
+  const handleClick = () => onChange(name)
 
   let dayClass = classNames('day-list__item', {
     'day-list__item--selected': selected,

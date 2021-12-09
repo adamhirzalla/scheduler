@@ -35,7 +35,7 @@ storiesOf("DayListItem", module)
 .add("Selected", () => <DayListItem name="Monday" spots={5} selected />) 
 .add("Full", () => <DayListItem name="Monday" spots={0} />)
 .add("Clickable", () => (
-  <DayListItem name="Tuesday" setDay={action("setDay")} spots={5} />
+  <DayListItem name="Tuesday" onChange={action("setDay")} spots={5} />
 ));
 
 const days = [
@@ -60,13 +60,13 @@ storiesOf("DayList", module)
 .addParameters({
   backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
 })
-.add("Monday", () => (<DayList days={days} day={"Monday"} setDay={action("setDay")} />
+.add("Monday", () => (<DayList days={days} value={"Monday"} onChange={action("setDay")} />
 ))
 .add("Tuesday", () => (
-  <DayList days={days} day={"Tuesday"} setDay={action("setDay")} />
+  <DayList days={days} value={"Tuesday"} setDay={action("setDay")} />
 ))
 .add("Wednesday", () => (
-    <DayList days={days} day={"Wednesday"} setDay={action("setDay")} />
+    <DayList days={days} value={"Wednesday"} onChange={action("setDay")} />
 ));
 
 const interviewer = {
@@ -93,7 +93,7 @@ storiesOf("InterviewerListItem", module)
 .add("Clickable", () => (
   <InterviewerListItem 
     {...interviewer} 
-    setInterviewer={() => action("setInterviewer")(interviewer.id)} 
+    onChange={() => action("setInterviewer")(interviewer.id)} 
   />
 ))
 
@@ -116,11 +116,11 @@ storiesOf("InterviewerList", module)
   ))
   .add("Selected", () => (
     <InterviewerList
-    {...{interviewers, interviewer: 3}}
+    {...{interviewers, value: 3}}
     />
   ))
   .add("Clickable", () => (
     <InterviewerList
-    {...{interviewers, setInterviewer: action("setInterviewer")}}
+    {...{interviewers, onChange: action("setInterviewer")}}
     />
   ));
