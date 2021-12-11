@@ -47,14 +47,6 @@ export default function Application(props) {
     )
   })
 
-  const parsedAppointments = appointments.map(appointment =>
-    <Appointment {...{
-      key: appointment.id,
-      time: appointment.time,
-      interview: appointment.interview
-    }} />
-  )
-
   return (
     <main className="layout">
       <section className="sidebar">
