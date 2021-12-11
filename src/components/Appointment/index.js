@@ -15,7 +15,7 @@ const EDIT = "EDIT"
 const DELETE = "DELETE"
 
 export default function Appointment(props) {
-  const { time, interview } = props
+  const { time, interview, interviewers } = props
   const { transition, back, mode } = useVisualMode(interview ? SHOW : EMPTY)
   const handleClick = (e) => console.log(`Clicked ${e.target.alt}`);
   const onAdd = () => transition(CREATE)
@@ -34,7 +34,7 @@ export default function Appointment(props) {
           onDelete: handleClick
         }}/> : 
         mode === CREATE ? <Form {...{
-          interviewers: [],
+          interviewers,
           onSave: handleClick,
           onCancel
         }}/> :
