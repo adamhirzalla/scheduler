@@ -27,29 +27,21 @@ export default function Appointment(props) {
   const onDelete = () => transition(CONFIRM)
   const onEdit = () => transition(EDIT)
   const onCancel = () => back()
-
-  const destroy = () => {
-    deleteInterview(id)
-    .then(() => transition(EMPTY))
-    .catch(() => transition(ERROR_DELETE))
-  } 
+  const handleError = () => back()
 
   const onSave = (student, interviewer) => {
     transition(SAVING)
     bookInterview(id, { student, interviewer })
     .then(() => transition(SHOW))
-    .catch(() => transition(ERROR_SAVE))
+    .catch(() => transition(ERROR_SAVE, true))
   }
 
-  const onConfirm = () => {
-    transition(DELETING)
-    destroy()
-  }
-
-  const handleError = () => {
-    if (mode === ERROR_SAVE) transition(EMPTY)
-    if (mode === ERROR_DELETE) transition(SHOW)
-  }
+  const destroy = () => {
+    transition(DELETING, true)
+    deleteInterview(id)
+    .then(() => transition(EMPTY))
+    .catch(() => transition(ERROR_DELETE, true))
+  } 
 
   return (
     <article className="appointment">
@@ -78,7 +70,7 @@ export default function Appointment(props) {
         mode === ERROR_DELETE ? <Error message={'Could not delete!'} onClose={handleError} /> :
         mode === CONFIRM ? <Confirm {...{
           message: 'Are you sure you want to delete?',
-          onConfirm,
+          onConfirm: destroy,
           onCancel
         }} /> :
         mode === EMPTY ? <Empty {...{onAdd}}/> : <></>
