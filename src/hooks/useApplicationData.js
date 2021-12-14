@@ -7,15 +7,34 @@ const SET_INTERVIEW = "SET_INTERVIEW";
 
 export default function useApplicationData() {
   function reducer(state, action) {
-    const { day, days, appointments, interviewers } = action
+    const { day, days, appointments, interviewers, id, interview } = action
     switch (action.type) {
       case SET_DAY:
         return { ...state, day }
       case SET_APPLICATION_DATA:
         return { ...state, days, appointments, interviewers }
-      case SET_INTERVIEW:
+      case SET_INTERVIEW: {
+        const getNewSpots = (day) => {
+          if (!interview) return day.spots + 1
+          if (interview && state.appointments[id].interview) return day.spots
+          if (interview && !state.appointments[id].interview) return day.spots - 1
+        }
+        const [newDay] = state.days.filter(day => day.appointments.includes(id))
+        const spots = getNewSpots(newDay)
+        const appointment = {
+          ...state.appointments[id],
+          interview
+        }
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment
+        }
+        const days = state.days.map(day => {
+          if (day.id === newDay.id) return {...newDay, spots}
+          return day
+        })
         return { ...state, appointments, days }
-    
+      }
       default:
         throw new Error(`Unsupported action type: ${action.type}`)
     }
@@ -45,49 +64,28 @@ export default function useApplicationData() {
     })
   }, [])
 
-  const updateSpots = (id, increment) => {
-    const [day] = state.days.filter(day => day.appointments.includes(id))
-    if (increment) day.spots++
-    else if (!state.appointments[id].interview) day.spots--
-    return day
-  }
+  useEffect(() => {
+    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
+    ws.onopen = () => ws.send("ping")
+    ws.onmessage = e => {
+      const data = JSON.parse(e.data)
+      const { type } = data
+      console.log(data);
+    }
+
+    return () => ws.close()
+  }, [])
 
   const bookInterview = async (id, interview) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview
-    }
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
-    const newDay = updateSpots(id, false)
-    const days = state.days.map(day => {
-      if (day.id === newDay.id) return newDay
-      return day
-    })
     await axios
       .put(`/api/appointments/${id}`, { interview })
-    dispatch({ type: SET_INTERVIEW, appointments, days })
+    dispatch({ type: SET_INTERVIEW, id, interview })
   }
-
-  const deleteInterview = async (id) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    }
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
-    const newDay = updateSpots(id, true)
-    const days = state.days.map(day => {
-      if (day.id === newDay.id) return newDay
-      return day
-    })
+ 
+  const deleteInterview = async (id, interview) => {
     await axios
       .delete(`/api/appointments/${id}`);
-    dispatch({ type: SET_INTERVIEW, appointments, days })
+    dispatch({ type: SET_INTERVIEW, id, interview })
   }
 
   return { state, setDay, bookInterview, deleteInterview }
