@@ -28,15 +28,7 @@ export default function useApplicationData() {
     interviewers: {}
   })
 
-  // const [state, setState] = useState({
-  //   day: 'Monday',
-  //   days: [],
-  //   appointments: {},
-  //   interviewers: {}
-  // })
-
   const setDay = day => dispatch({ type: SET_DAY, day })
-  // const setDay = day => setState(prev => ({...prev, day}))
 
   useEffect(() => {
     Promise.all([
@@ -52,20 +44,6 @@ export default function useApplicationData() {
       })
     })
   }, [])
-  // useEffect(() => {
-  //   Promise.all([
-  //     axios.get(`api/days`),
-  //     axios.get(`api/appointments`),
-  //     axios.get(`api/interviewers`)
-  //   ]).then(all => {
-  //     setState(prev => ({
-  //       ...prev, 
-  //       days: all[0].data, 
-  //       appointments: all[1].data,
-  //       interviewers: all[2].data
-  //     }))
-  //   })
-  // }, [])
 
   const updateSpots = (id, increment) => {
     const [day] = state.days.filter(day => day.appointments.includes(id))
@@ -91,7 +69,6 @@ export default function useApplicationData() {
     await axios
       .put(`/api/appointments/${id}`, { interview })
     dispatch({ type: SET_INTERVIEW, appointments, days })
-    // setState(prev => ({ ...prev, appointments, days }))
   }
 
   const deleteInterview = async (id) => {
@@ -111,7 +88,6 @@ export default function useApplicationData() {
     await axios
       .delete(`/api/appointments/${id}`);
     dispatch({ type: SET_INTERVIEW, appointments, days })
-    // setState(prev => ({ ...prev, appointments, days }));
   }
 
   return { state, setDay, bookInterview, deleteInterview }
