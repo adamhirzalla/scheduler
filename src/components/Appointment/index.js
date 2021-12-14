@@ -1,15 +1,17 @@
+import useVisualMode from "hooks/useVisualMode";
+import "components/Appointment/styles.scss"
+
 import React from "react";
 import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
-
-import "components/Appointment/styles.scss"
-import useVisualMode from "hooks/useVisualMode";
+import Status from "./Status";
 
 const EMPTY = "EMPTY"
 const SHOW = "SHOW"
 const CREATE = "CREATE"
+const SAVING = "SAVING"
 const EDIT = "EDIT"
 const DELETE = "DELETE"
 
@@ -27,8 +29,9 @@ export default function Appointment(props) {
       student,
       interviewer
     }
+    transition(SAVING)
     bookInterview(id, interview)
-    transition(SHOW)
+    .then(() => transition(SHOW))
   }
 
   return (
@@ -45,6 +48,7 @@ export default function Appointment(props) {
           onSave,
           onCancel,
         }}/> :
+        mode === SAVING ? <Status message={'Saving, please wait...'} /> :
         mode === EMPTY ? <Empty {...{onAdd}}/> : <></>
       }
     </article>
