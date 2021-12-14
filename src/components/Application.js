@@ -32,7 +32,7 @@ export default function Application(props) {
     })
   }, [])
 
-  const bookInterview = (id, interview) => {
+  const bookInterview = async (id, interview) => {
     const appointment = {
       ...state.appointments[id],
       interview
@@ -41,12 +41,23 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     }
-    // Update the database by making a PUT axios call to our API
-    return axios
-      .put(`/api/appointments/${id}`, { interview })
-      .then(() => {
-        setState(prev => ({ ...prev, appointments }))
-      })
+    await axios
+      .put(`/api/appointments/${id}`, { interview });
+    setState(prev => ({ ...prev, appointments }));
+  }
+
+  const deleteInterview = async (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    await axios
+      .delete(`/api/appointments/${id}`);
+    setState(prev => ({ ...prev, appointments }));
   }
 
   const appointments = getAppointmentsForDay(state, state.day)
@@ -62,7 +73,8 @@ export default function Application(props) {
         time,
         interview,
         interviewers,
-        bookInterview
+        bookInterview,
+        deleteInterview
       }} />
     )
   })

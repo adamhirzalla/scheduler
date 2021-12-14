@@ -12,17 +12,14 @@ const EMPTY = "EMPTY"
 const SHOW = "SHOW"
 const CREATE = "CREATE"
 const SAVING = "SAVING"
-const EDIT = "EDIT"
-const DELETE = "DELETE"
+const DELETING = "DELETING"
 
 export default function Appointment(props) {
-  const { id, time, interview, interviewers, bookInterview } = props
+  const { id, time, interview, interviewers, bookInterview, deleteInterview } = props
   const { transition, back, mode } = useVisualMode(interview ? SHOW : EMPTY)
   const handleClick = (e) => console.log(`Clicked ${e.target.alt}`);
   const onAdd = () => transition(CREATE)
   const onCancel = () => back()
-  const onEdit = () => transition(EDIT)
-  const onDelete = () => transition(DELETE)
 
   const onSave = (student, interviewer) => {
     const interview = {
@@ -34,6 +31,12 @@ export default function Appointment(props) {
     .then(() => transition(SHOW))
   }
 
+  const onDelete = () => {
+    transition(DELETING)
+    deleteInterview(id)
+    .then(() => transition(EMPTY))
+  }
+
   return (
     <article className="appointment">
       <Header {...{time}} />
@@ -41,7 +44,7 @@ export default function Appointment(props) {
         mode === SHOW ? <Show {...{
           ...interview, 
           onEdit: handleClick,
-          onDelete: handleClick
+          onDelete
         }}/> : 
         mode === CREATE ? <Form {...{
           interviewers,
@@ -49,6 +52,7 @@ export default function Appointment(props) {
           onCancel,
         }}/> :
         mode === SAVING ? <Status message={'Saving, please wait...'} /> :
+        mode === DELETING ? <Status message={'Deleting, please wait...'} /> :
         mode === EMPTY ? <Empty {...{onAdd}}/> : <></>
       }
     </article>
