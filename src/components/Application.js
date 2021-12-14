@@ -34,6 +34,16 @@ export default function Application(props) {
 
   const bookInterview = (id, interview) => {
     console.log(id, interview);
+    setState(prev => ({
+      ...prev,
+      appointments: ({
+        ...prev.appointments,
+        [id]: ({
+          ...prev.appointments[id],
+          interview
+        })
+      })
+    }))
   }
 
   const appointments = getAppointmentsForDay(state, state.day)

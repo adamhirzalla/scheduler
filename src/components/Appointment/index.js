@@ -10,7 +10,6 @@ import useVisualMode from "hooks/useVisualMode";
 const EMPTY = "EMPTY"
 const SHOW = "SHOW"
 const CREATE = "CREATE"
-const SAVE = "SAVE"
 const EDIT = "EDIT"
 const DELETE = "DELETE"
 
@@ -20,16 +19,16 @@ export default function Appointment(props) {
   const handleClick = (e) => console.log(`Clicked ${e.target.alt}`);
   const onAdd = () => transition(CREATE)
   const onCancel = () => back()
-  const onSave = () => transition(SAVE)
   const onEdit = () => transition(EDIT)
   const onDelete = () => transition(DELETE)
 
-  const save = (student, interviewer) => {
+  const onSave = (student, interviewer) => {
     const interview = {
       student,
       interviewer
     }
     bookInterview(id, interview)
+    transition(SHOW)
   }
 
   return (
@@ -43,7 +42,7 @@ export default function Appointment(props) {
         }}/> : 
         mode === CREATE ? <Form {...{
           interviewers,
-          onSave: save,
+          onSave,
           onCancel,
         }}/> :
         mode === EMPTY ? <Empty {...{onAdd}}/> : <></>
