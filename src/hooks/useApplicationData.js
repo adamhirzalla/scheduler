@@ -66,11 +66,9 @@ export default function useApplicationData() {
 
   useEffect(() => {
     const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
-    ws.onopen = () => ws.send("ping")
     ws.onmessage = e => {
       const data = JSON.parse(e.data)
-      const { type } = data
-      console.log(data);
+      if (data.type === SET_INTERVIEW) dispatch(data)
     }
 
     return () => ws.close()
@@ -79,13 +77,11 @@ export default function useApplicationData() {
   const bookInterview = async (id, interview) => {
     await axios
       .put(`/api/appointments/${id}`, { interview })
-    dispatch({ type: SET_INTERVIEW, id, interview })
   }
  
   const deleteInterview = async (id, interview) => {
     await axios
       .delete(`/api/appointments/${id}`);
-    dispatch({ type: SET_INTERVIEW, id, interview })
   }
 
   return { state, setDay, bookInterview, deleteInterview }

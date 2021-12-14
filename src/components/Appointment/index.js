@@ -1,7 +1,7 @@
 import useVisualMode from "hooks/useVisualMode";
 import "components/Appointment/styles.scss"
 
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
@@ -43,11 +43,16 @@ export default function Appointment(props) {
     .catch(() => transition(ERROR_DELETE, true))
   } 
 
+  useEffect(() => {
+    if (mode === EMPTY && interview) transition(SHOW)
+    if (mode === SHOW && !interview) transition(EMPTY)
+  }, [interview, mode, transition])
+
   return (
     <article className="appointment">
       <Header {...{time}} />
       {
-        mode === SHOW ? <Show {...{
+        mode === SHOW && interview ? <Show {...{
           ...interview, 
           onEdit,
           onDelete
