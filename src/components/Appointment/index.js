@@ -15,6 +15,7 @@ const CREATE = "CREATE"
 const SAVING = "SAVING"
 const DELETING = "DELETING"
 const CONFIRM = "CONFIRM"
+const EDIT = "EDIT"
 
 export default function Appointment(props) {
   const { id, time, interview, interviewers, bookInterview, deleteInterview } = props
@@ -22,6 +23,7 @@ export default function Appointment(props) {
   const handleClick = (e) => console.log(`Clicked ${e.target.alt}`);
   const onAdd = () => transition(CREATE)
   const onDelete = () => transition(CONFIRM)
+  const onEdit = () => transition(EDIT)
   const onCancel = () => back()
 
   const onSave = (student, interviewer) => {
@@ -46,9 +48,16 @@ export default function Appointment(props) {
       {
         mode === SHOW ? <Show {...{
           ...interview, 
-          onEdit: handleClick,
+          onEdit,
           onDelete
         }}/> : 
+        mode === EDIT ? <Form {...{
+          interviewers,
+          student: interview.student,
+          interviewer: interview.interviewer.id,
+          onSave,
+          onCancel,
+        }}/> :
         mode === CREATE ? <Form {...{
           interviewers,
           onSave,
