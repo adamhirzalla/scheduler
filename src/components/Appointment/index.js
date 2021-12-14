@@ -15,7 +15,7 @@ const EDIT = "EDIT"
 const DELETE = "DELETE"
 
 export default function Appointment(props) {
-  const { time, interview, interviewers } = props
+  const { id, time, interview, interviewers, bookInterview } = props
   const { transition, back, mode } = useVisualMode(interview ? SHOW : EMPTY)
   const handleClick = (e) => console.log(`Clicked ${e.target.alt}`);
   const onAdd = () => transition(CREATE)
@@ -23,6 +23,14 @@ export default function Appointment(props) {
   const onSave = () => transition(SAVE)
   const onEdit = () => transition(EDIT)
   const onDelete = () => transition(DELETE)
+
+  const save = (student, interviewer) => {
+    const interview = {
+      student,
+      interviewer
+    }
+    bookInterview(id, interview)
+  }
 
   return (
     <article className="appointment">
@@ -35,8 +43,8 @@ export default function Appointment(props) {
         }}/> : 
         mode === CREATE ? <Form {...{
           interviewers,
-          onSave: handleClick,
-          onCancel
+          onSave: save,
+          onCancel,
         }}/> :
         mode === EMPTY ? <Empty {...{onAdd}}/> : <></>
       }
