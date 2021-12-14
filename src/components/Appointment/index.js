@@ -38,7 +38,7 @@ export default function Appointment(props) {
 
   const destroy = () => {
     transition(DELETING, true)
-    deleteInterview(id, null)
+    deleteInterview(id)
     .then(() => transition(EMPTY))
     .catch(() => transition(ERROR_DELETE, true))
   } 

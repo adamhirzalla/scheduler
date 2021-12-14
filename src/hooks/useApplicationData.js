@@ -14,13 +14,6 @@ export default function useApplicationData() {
       case SET_APPLICATION_DATA:
         return { ...state, days, appointments, interviewers }
       case SET_INTERVIEW: {
-        const getNewSpots = (day) => {
-          if (!interview) return day.spots + 1
-          if (interview && state.appointments[id].interview) return day.spots
-          if (interview && !state.appointments[id].interview) return day.spots - 1
-        }
-        const [newDay] = state.days.filter(day => day.appointments.includes(id))
-        const spots = getNewSpots(newDay)
         const appointment = {
           ...state.appointments[id],
           interview
@@ -29,6 +22,8 @@ export default function useApplicationData() {
           ...state.appointments,
           [id]: appointment
         }
+        const [newDay] = state.days.filter(day => day.appointments.includes(id))
+        const spots = newDay.appointments.filter(appointment => !appointments[appointment].interview).length
         const days = state.days.map(day => {
           if (day.id === newDay.id) return {...newDay, spots}
           return day
@@ -70,7 +65,6 @@ export default function useApplicationData() {
       const data = JSON.parse(e.data)
       if (data.type === SET_INTERVIEW) dispatch(data)
     }
-
     return () => ws.close()
   }, [])
 
@@ -79,7 +73,7 @@ export default function useApplicationData() {
       .put(`/api/appointments/${id}`, { interview })
   }
  
-  const deleteInterview = async (id, interview) => {
+  const deleteInterview = async (id) => {
     await axios
       .delete(`/api/appointments/${id}`);
   }
