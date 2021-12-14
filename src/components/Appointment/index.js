@@ -8,6 +8,7 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY"
 const SHOW = "SHOW"
@@ -16,30 +17,38 @@ const SAVING = "SAVING"
 const DELETING = "DELETING"
 const CONFIRM = "CONFIRM"
 const EDIT = "EDIT"
+const ERROR_SAVE = "ERROR_SAVE"
+const ERROR_DELETE = "ERROR_DELETE"
 
 export default function Appointment(props) {
   const { id, time, interview, interviewers, bookInterview, deleteInterview } = props
   const { transition, back, mode } = useVisualMode(interview ? SHOW : EMPTY)
-  const handleClick = (e) => console.log(`Clicked ${e.target.alt}`);
   const onAdd = () => transition(CREATE)
   const onDelete = () => transition(CONFIRM)
   const onEdit = () => transition(EDIT)
   const onCancel = () => back()
 
+  const destroy = () => {
+    deleteInterview(id)
+    .then(() => transition(EMPTY))
+    .catch(() => transition(ERROR_DELETE))
+  } 
+
   const onSave = (student, interviewer) => {
-    const interview = {
-      student,
-      interviewer
-    }
     transition(SAVING)
-    bookInterview(id, interview)
+    bookInterview(id, { student, interviewer })
     .then(() => transition(SHOW))
+    .catch(() => transition(ERROR_SAVE))
   }
 
   const onConfirm = () => {
     transition(DELETING)
-    deleteInterview(id)
-    .then(() => transition(EMPTY))
+    destroy()
+  }
+
+  const handleError = () => {
+    if (mode === ERROR_SAVE) transition(EMPTY)
+    if (mode === ERROR_DELETE) transition(SHOW)
   }
 
   return (
@@ -65,6 +74,8 @@ export default function Appointment(props) {
         }}/> :
         mode === SAVING ? <Status message={'Saving, please wait...'} /> :
         mode === DELETING ? <Status message={'Deleting, please wait...'} /> :
+        mode === ERROR_SAVE ? <Error message={'Could not save!'} onClose={handleError}/> :
+        mode === ERROR_DELETE ? <Error message={'Could not delete!'} onClose={handleError} /> :
         mode === CONFIRM ? <Confirm {...{
           message: 'Are you sure you want to delete?',
           onConfirm,
