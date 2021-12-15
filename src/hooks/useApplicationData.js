@@ -54,6 +54,7 @@ export default function useApplicationData() {
         interviewers: all[2].data
       })
     })
+    .catch(e => console.log(e.message))
   }, [])
 
   useEffect(() => {

@@ -1,13 +1,18 @@
 import React from "react";
 
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, waitForElement, fireEvent } from "@testing-library/react";
 
 import Application from "components/Application";
 
 afterEach(cleanup);
+const ENV_VAR = process.env
+process.env.REACT_APP_WEBSOCKET_URL = 'ws://localhost:8001'
 
-it("renders without crashing", () => {
-  const ENV_VAR = process.env
-  process.env.REACT_APP_WEBSOCKET_URL = 'ws://localhost:8001'
-  render(<Application />);
+it("defaults to Monday and changes the schedule when a new day is selected", () => {
+  const { getByText } = render(<Application />);
+
+  return waitForElement(() => getByText("Monday")).then(() => {
+    fireEvent.click(getByText("Tuesday"))
+    expect(getByText("Leopold Silvers")).toBeInTheDocument();
+  })
 });
