@@ -67,13 +67,11 @@ export default function useApplicationData() {
   }, [])
 
   async function bookInterview(id, interview) {
-    await axios
-      .put(`/api/appointments/${id}`, { interview });
+    await axios.put(`/api/appointments/${id}`, { interview });
   }
  
   async function deleteInterview(id) {
-    await axios
-      .delete(`/api/appointments/${id}`);
+    await axios.delete(`/api/appointments/${id}`);
   }
 
   function updateSpots(state, appointments, id) {

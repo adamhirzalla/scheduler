@@ -31,7 +31,9 @@ export default {
     }
 
     return (endpoints[url] || endpoints.default)()
-  })
+  }),
+
+  // put: jest.fn(() => ({ status: 204, statusText: "No Content" }))
 }
 
 const fixtures = {
