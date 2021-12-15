@@ -26,8 +26,6 @@ export default function Appointment(props) {
   const onAdd = () => transition(CREATE)
   const onDelete = () => transition(CONFIRM)
   const onEdit = () => transition(EDIT)
-  const onCancel = () => back()
-  const handleError = () => back()
 
   const onSave = (student, interviewer) => {
     transition(SAVING)
@@ -62,21 +60,21 @@ export default function Appointment(props) {
           student: interview.student,
           interviewer: interview.interviewer.id,
           onSave,
-          onCancel,
+          onCancel: back,
         }}/> :
         mode === CREATE ? <Form {...{
           interviewers,
           onSave,
-          onCancel,
+          onCancel: back,
         }}/> :
         mode === SAVING ? <Status message={'Saving, please wait...'} /> :
         mode === DELETING ? <Status message={'Deleting, please wait...'} /> :
-        mode === ERROR_SAVE ? <Error message={'Could not save!'} onClose={handleError}/> :
-        mode === ERROR_DELETE ? <Error message={'Could not delete!'} onClose={handleError} /> :
+        mode === ERROR_SAVE ? <Error message={'Could not save!'} onClose={back}/> :
+        mode === ERROR_DELETE ? <Error message={'Could not delete!'} onClose={back} /> :
         mode === CONFIRM ? <Confirm {...{
           message: 'Are you sure you want to delete?',
           onConfirm: destroy,
-          onCancel
+          onCancel: back
         }} /> :
         mode === EMPTY ? <Empty {...{onAdd}}/> : <></>
       }
