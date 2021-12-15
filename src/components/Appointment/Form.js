@@ -22,7 +22,7 @@ export default function Form(props) {
   }
 
   const save = () => {
-    if (student && interviewer) return onSave(student, interviewer)
+    if (student && interviewer) onSave(student, interviewer)
     setError({
       ...error,
       student: student ? "" : "Student name cannot be blank",
