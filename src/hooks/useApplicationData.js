@@ -22,12 +22,7 @@ export default function useApplicationData() {
           ...state.appointments,
           [id]: appointment
         }
-        const [newDay] = state.days.filter(day => day.appointments.includes(id))
-        const spots = newDay.appointments.filter(appointment => !appointments[appointment].interview).length
-        const days = state.days.map(day => {
-          if (day.id === newDay.id) return {...newDay, spots}
-          return day
-        })
+        const days = updateSpots(state, appointments, id)
         return { ...state, appointments, days }
       }
       default:
@@ -42,7 +37,9 @@ export default function useApplicationData() {
     interviewers: {}
   })
 
-  const setDay = day => dispatch({ type: SET_DAY, day })
+  function setDay(day) {
+    return dispatch({ type: SET_DAY, day });
+  }
 
   useEffect(() => {
     Promise.all([
@@ -68,14 +65,25 @@ export default function useApplicationData() {
     return () => ws.close()
   }, [])
 
-  const bookInterview = async (id, interview) => {
+  async function bookInterview(id, interview) {
     await axios
-      .put(`/api/appointments/${id}`, { interview })
+      .put(`/api/appointments/${id}`, { interview });
   }
  
-  const deleteInterview = async (id) => {
+  async function deleteInterview(id) {
     await axios
       .delete(`/api/appointments/${id}`);
+  }
+
+  function updateSpots(state, appointments, id) {
+    const [newDay] = state.days.filter(day => day.appointments.includes(id));
+    const spots = newDay.appointments.filter(appointment => !appointments[appointment].interview).length;
+    const days = state.days.map(day => {
+      if (day.id === newDay.id)
+        return { ...newDay, spots };
+      return day;
+    });
+    return days;
   }
 
   return { state, setDay, bookInterview, deleteInterview }
