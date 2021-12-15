@@ -1,8 +1,9 @@
 import React from "react";
 
-import 
-{ render, cleanup, waitForElement, fireEvent, getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText } 
-from "@testing-library/react";
+import {
+  render, cleanup, waitForElement, fireEvent, getByText, prettyDOM,
+  getAllByTestId, getByAltText, getByPlaceholderText, queryByText 
+} from "@testing-library/react";
 
 import Application from "components/Application";
 
@@ -33,10 +34,22 @@ describe("Application", () => {
     });
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"))
     fireEvent.click(getByText(appointment, "Save"))
-
+   
     expect(getByText(appointment, "Saving", { exact: false })).toBeInTheDocument()
 
-    console.log(prettyDOM(appointment));
+    /* 
+    Cant't test for PUT or DELETE request as I'm relying on a WebSocket connection
+    await waitForElement(() => getByText(appointment, "Lydia Miller-Jones")); 
+    */
+
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+
+    /* 
+    Cant't test for updated spots as I'm relying on a WebSocket connection
+    expect(getByText(day, "no spots remaining", { exact: false })).toBeInTheDocument()
+    */
   });
 })
 
