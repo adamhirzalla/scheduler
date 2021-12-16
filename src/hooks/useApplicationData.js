@@ -68,10 +68,12 @@ export default function useApplicationData() {
 
   async function bookInterview(id, interview) {
     await axios.put(`/api/appointments/${id}`, { interview });
+    dispatch({ type: SET_INTERVIEW, id, interview })
   }
  
   async function deleteInterview(id) {
     await axios.delete(`/api/appointments/${id}`);
+    dispatch({ type: SET_INTERVIEW, id, interview: null })
   }
 
   function updateSpots(state, appointments, id) {
