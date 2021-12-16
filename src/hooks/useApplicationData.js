@@ -39,7 +39,7 @@ export default function useApplicationData() {
   useEffect(() => {
     const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
     ws.onmessage = e => {
-      // Prase the server response we receive
+      // Parse the server response we receive
       const data = JSON.parse(e.data)
       // dispatch data when receiving a server response (on PUT/DELETE requests)
       // This happens when ANY connected user makes a request

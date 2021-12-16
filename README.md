@@ -14,7 +14,6 @@ Interview Scheduler is a React application that allows users to book and cancel 
 The app is deployed and can be viewed at [scheduler.hirzalla.ca](https://scheduler-project-lhl.netlify.app/).
 
 ## Features
-<hr>
 
 - Supports WebSockets for a flawless user-experience which provides real-time updates
 - Automated deployment: CI/CD using CircleCI, API hosted on Heroku, client build deployed at Netlify
@@ -25,7 +24,6 @@ The app is deployed and can be viewed at [scheduler.hirzalla.ca](https://schedul
 - Navigate through different days of the week by clicking the sidebar
 
 ## Screenshots
-<hr>
 
 ![Main View](./docs/images/main-view.png)
 ![Form](./docs/images/form.png)
@@ -35,7 +33,6 @@ The app is deployed and can be viewed at [scheduler.hirzalla.ca](https://schedul
 ![Confirmation](./docs/images/confirmation.png)
 
 ## Setup
-<hr>
 
 ### You can use the published build deployed at [scheduler.hirzalla.ca](https://scheduler-project-lhl.netlify.app/)
 
