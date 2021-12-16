@@ -10,6 +10,7 @@ import Status from "./Status";
 import Confirm from "./Confirm";
 import Error from "./Error";
 
+// VisualMode states (used for transitioning back and forth between components)
 const EMPTY = "EMPTY"
 const SHOW = "SHOW"
 const CREATE = "CREATE"
@@ -27,6 +28,13 @@ export default function Appointment(props) {
   const onDelete = () => transition(CONFIRM)
   const onEdit = () => transition(EDIT)
 
+  /* 
+  Handles:
+  - Transitioning to 'SAVING' status indicator
+  - Making an Axios PUT request to the server
+  - Transitioning to SHOW mode on success
+  - Transitioning to Error mode on failure
+  */
   const onSave = (student, interviewer) => {
     transition(SAVING)
     bookInterview(id, { student, interviewer })
@@ -34,13 +42,23 @@ export default function Appointment(props) {
     .catch(() => transition(ERROR_SAVE, true))
   }
 
+  /* 
+  Handles:
+  - Transitioning to 'DELETING' status indicator
+  - Making an Axios DELETE request to the server
+  - Transitioning to Empty mode on success
+  - Transitioning to Error mode on failure
+  */
   const destroy = () => {
     transition(DELETING, true)
     deleteInterview(id)
     .then(() => transition(EMPTY))
     .catch(() => transition(ERROR_DELETE, true))
   } 
-
+  /*
+  Handles: updating components accordingly when changing state due to new
+  WebSocket requests by the server (made by other connected clients)
+  */
   useEffect(() => {
     if (mode === EMPTY && interview) transition(SHOW)
     if (mode === SHOW && !interview) transition(EMPTY)

@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+/* 
+Custom hook: used for managing mode state, which handles mode transitions. 
+This is done by having an array of modes representing history. Most recent mode is 
+always on top of the stack (array). On every transition, unshift the 
+mode to the array without mutating state, which utilizes the spread operator
+*/
 export default function useVisualMode(initial) {
   const [history, setHistory] = useState([initial])
   const transition = (newMode, replace = false) => {

@@ -6,6 +6,7 @@ import reducer, {
   SET_INTERVIEW
 } from "reducers/application";
 
+// Handles initial API setup, starting a WebSocket connection, setting state
 export default function useApplicationData() {
   const [state, dispatch] = useReducer(reducer, {
     day: 'Monday',
@@ -18,6 +19,7 @@ export default function useApplicationData() {
     return dispatch({ type: SET_DAY, day });
   }
 
+  // Initial API call setup for populating data (in an Effect hook to prevent leaks)
   useEffect(() => {
     Promise.all([
       axios.get(`api/days`),
@@ -33,12 +35,17 @@ export default function useApplicationData() {
     })
   }, [])
 
+  // Create the WebSocket connection once when the page is first rendered (cleanup on re-renders)
   useEffect(() => {
     const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
     ws.onmessage = e => {
+      // Prase the server response we receive
       const data = JSON.parse(e.data)
+      // dispatch data when receiving a server response (on PUT/DELETE requests)
+      // This happens when ANY connected user makes a request
       if (data.type === SET_INTERVIEW) dispatch(data)
     }
+    // Clean up by closing WS connection
     return () => ws.close()
   }, [])
 
@@ -46,6 +53,11 @@ export default function useApplicationData() {
     await axios.put(`/api/appointments/${id}`, { interview });
     dispatch({ type: SET_INTERVIEW, id, interview })
   }
+
+  // Even though it's not neccessary to dispatch after making an API request,
+  // (since the WebSocket connection dispatches for us) I'm intentionally dispatching
+  // here (and on deleteInterview) so that I can test component funcationality
+  // through Integration Testing using Jest (so state is not fully reliant on WS)
  
   async function deleteInterview(id) {
     await axios.delete(`/api/appointments/${id}`);

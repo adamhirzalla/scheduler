@@ -1,4 +1,6 @@
 export default {
+  // Mock-axios with fixtured data to handle our tests through Jest
+
   get: jest.fn(url => {
 
     const days = () => {
@@ -48,6 +50,7 @@ export default {
   })
 }
 
+// Static data for persistent tests
 const fixtures = {
   days: [
     {

@@ -4,6 +4,13 @@ import classNames from "classnames";
 import "components/DayListItem.scss"
 
 export default function DayListItem(props) {
+   /* 
+  Props:
+    spots: (number) of free spots in day
+    name: name of the day state (string)
+    setDay: (function) to set day state when navigating days
+    selected: currently selected day (string)
+  */
   const { name, spots, selected, setDay } = props
   const handleClick = () => setDay(name)
 
