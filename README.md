@@ -75,10 +75,11 @@ npm run cypress
 - [React-Scripts](https://www.npmjs.com/package/react-scripts)
 
 ### Dev
-- [Babel](https://babeljs.io/)
+- [Babel-loader](https://www.npmjs.com/package/babel-loader)
 - [Storybook](https://storybook.js.org/)
-- [Jest](https://jestjs.io/en/)
-- [Testing Library](https://testing-library.com/)
+- [@testing-library/jest-dom](https://www.npmjs.com/package/@testing-library/jest-dom)
+- [@testing-library/react](https://www.npmjs.com/package/@testing-library/react)
+- [@testing-library/react-hooks](https://www.npmjs.com/package/@testing-library/react-hooks)
 - [Cypress](https://www.npmjs.com/package/cypress)
 - [Node-sass](https://www.npmjs.com/package/node-sass)
 - [Prop-types](https://www.npmjs.com/package/prop-types)
