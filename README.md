@@ -3,7 +3,7 @@
 ## Table Of Contents
 - [Summary](#summary)
   - [Features](#features)
-  - [Demo](#demo)
+  - [Screenshots](#screenshots)
 - [Setup](#setup)
   - [Dependencies](#dependencies)
   - [Resources](#resources)
@@ -11,39 +11,39 @@
 # Summary
 Interview Scheduler is a React application that allows users to book and cancel interviews. A combination of concise API and a WebSocket server are used to build a realtime experience.
 
-The app is deployed and can be viewed at [scheduler.hirzalla.ca](https://scheduler-project-lhl.netlify.app/).
+> The app is deployed and can be viewed at [scheduler.hirzalla.ca](https://scheduler-project-lhl.netlify.app/).
 
 ## Features
 
-- Supports WebSockets for a flawless user-experience which provides real-time updates
-- Automated deployment: CI/CD using CircleCI, API hosted on Heroku, client build deployed at Netlify
+- Uses WebSocket connection for a realtime user-experience (<i>view updates from other clients as they happen! </i>)
+- Automated deployment: CI/CD using CircleCI, API server hosted on Heroku, app built and deployed at Netlify 
 - Choose an available time-slot and book a new interview!
 - Provide your name and choose one of the available interviewers for your appointment
-- Edit or delete an existing appointment
-- View how many available interview spots are remaining each day
-- Navigate through different days of the week by clicking the sidebar
+- Edit or cancel an existing appointment
+- View number of available spots remaining for each day
+- Navigate through different days of the week from the sidebar
 
 ## Screenshots
 
-![Main View](./docs/images/main-view.png)
-![Form](./docs/images/form.png)
 ![Form Validation](./docs/images/validation.png)
-![Edit/Delete](./docs/images/edit-delete.png)
+![Form](./docs/images/form.png)
 ![Status Indicator](./docs/images/saving-indicator.png)
+![Edit/Delete](./docs/images/edit-delete.png)
 ![Confirmation](./docs/images/confirmation.png)
 
 ## Setup
+1. Clone this in addition to [scheduler-api](https://github.com/adamhirzalla/scheduler-api) repositories
+2. Run both client and server (make sure to follow steps for running and seeding API server)
+3. Visit http://localhost:8000
+> <i>Needs the API server running alongside client. Run `cd scheduler-api && npm start`</i>
 
-### You can use the published build deployed at [scheduler.hirzalla.ca](https://scheduler-project-lhl.netlify.app/)
-
-### Install dependencies with 
+### Install Dependencies
 ```sh
-npm i
+cd scheduler && npm i
 ```
 
 ### Running Webpack Development Server
 
-<i>Needs an API server running separately. You can clone [Lighthouse Labs' repository](https://github.com/lighthouse-labs/scheduler-api)</i>
 ```sh
 npm start
 ```
@@ -60,11 +60,13 @@ npm test
 npm run storybook
 ```
 
-### Running Cypress Tests
+### Running Cypress E2E Tests
 
 ```sh
 npm run cypress
 ```
+> You'll need [scheduler-api](https://github.com/adamhirzalla/scheduler-api) server running alongside client in test environment for this. 
+<br/> Run `npm run test:server` on the API server
 
 ## Dependencies
 - [React](https://reactjs.org/)
