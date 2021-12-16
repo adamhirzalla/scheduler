@@ -82,6 +82,7 @@ npm run cypress
 - [Cypress](https://www.npmjs.com/package/cypress)
 - [Node-sass](https://www.npmjs.com/package/node-sass)
 - [Prop-types](https://www.npmjs.com/package/prop-types)
+- [React-test-renderer](https://www.npmjs.com/package/react-test-renderer)
 
 ## Resources
 - [Heroku](https://www.heroku.com/)
