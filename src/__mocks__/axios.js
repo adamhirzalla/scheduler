@@ -33,7 +33,19 @@ export default {
     return (endpoints[url] || endpoints.default)()
   }),
 
-  // put: jest.fn(() => ({ status: 204, statusText: "No Content" }))
+  put: jest.fn(() => {
+    return Promise.resolve({
+      status: 204,
+      statusText: "OK"
+    });
+  }),
+
+  delete: jest.fn(() => {
+    return Promise.resolve({
+      status: 204,
+      statusText: "OK"
+    });
+  })
 }
 
 const fixtures = {
